@@ -14,9 +14,6 @@ ADD datastax_key /tmp/datastax_key
 RUN apt-key add /tmp/datastax_key
 RUN echo "deb http://debian.datastax.com/community stable main" > /etc/apt/sources.list.d/datastax.list
 
-# Workaround for https://github.com/docker/docker/issues/6345
-RUN ln -s -f /bin/true /usr/bin/chfn
-
 # Install Cassandra 2.0.10
 RUN apt-get update && \
     apt-get install -y dsc21 cassandra cassandra-tools && \
