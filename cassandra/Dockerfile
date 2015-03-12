@@ -4,7 +4,7 @@
 #
 # Starts a Cassandra instance constituting a one node cluster. 
 
-FROM yrobla/cassandra:base
+FROM christobill/cassandra:base
 
 USER root
 
