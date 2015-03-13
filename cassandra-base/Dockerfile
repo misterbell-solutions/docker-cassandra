@@ -1,9 +1,8 @@
-# Spotify Cassandra 2.0 Base Image
+# Cassandra 2.1 Base Image
 #
 # VERSION               0.1
 #
-# Installs Cassandra 2.0 package. Does only basic configuration.
-# Tokens and seed nodes should be configured by child images.
+# Installs Cassandra 2.1 package. 
 
 FROM dockerfile/java:oracle-java7
 
@@ -14,7 +13,7 @@ ADD datastax_key /tmp/datastax_key
 RUN apt-key add /tmp/datastax_key
 RUN echo "deb http://debian.datastax.com/community stable main" > /etc/apt/sources.list.d/datastax.list
 
-# Install Cassandra 2.0.10
+# Install Cassandra 2.1.3
 RUN apt-get update && \
     apt-get install -y dsc21 cassandra cassandra-tools && \
     rm -rf /var/lib/apt/lists/*
