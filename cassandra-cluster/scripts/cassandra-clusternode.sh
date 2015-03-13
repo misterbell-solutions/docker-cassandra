@@ -4,7 +4,10 @@
 IP=`hostname --ip-address`
 
 # Dunno why zeroes here
-sed -i -e "s/^rpc_address.*/rpc_address: $IP/" $CASSANDRA_CONFIG/cassandra.yaml
+sed -i -e "s/^rpc_address.*/rpc_address: 0.0.0.0/" $CASSANDRA_CONFIG/cassandra.yaml
+
+# Set broadcast_rpc_address
+sed -i -e "s/^# broadcast_rpc_address.*/broadcast_rpc_address: $HOST/" $CASSANDRA_CONFIG/cassandra.yaml
 
 # Listen on IP:port of the container
 sed -i -e "s/^listen_address.*/listen_address: $IP/" $CASSANDRA_CONFIG/cassandra.yaml
@@ -24,6 +27,6 @@ if [ -z "$CASSANDRA_SEEDS" ]; then
 fi
 sed -i -e "s/- seeds: \"127.0.0.1\"/- seeds: \"$CASSANDRA_SEEDS\"/" $CASSANDRA_CONFIG/cassandra.yaml
 
-echo "Starting Cassandra on $IP..."
+echo "Starting Cassandra on $HOST..."
 
 cassandra -f
