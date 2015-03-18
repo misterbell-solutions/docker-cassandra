@@ -11,7 +11,7 @@ sed -i -e "s/^rpc_address.*/rpc_address: 0.0.0.0/" $CASSANDRA_CONFIG/cassandra.y
 sed -i -e "s/^# broadcast_rpc_address.*/broadcast_rpc_address: $HOST/" $CASSANDRA_CONFIG/cassandra.yaml
 
 # Listen on IP:port of the container
-sed -i -e "s/^listen_address.*/listen_address: $IP/" $CASSANDRA_CONFIG/cassandra.yaml
+sed -i -e "s/^listen_address.*/listen_address: $HOST/" $CASSANDRA_CONFIG/cassandra.yaml
 
 # Broadcast on IP:port of the container
 sed -i -e "s/^# broadcast_address.*/broadcast_address: $HOST/" $CASSANDRA_CONFIG/cassandra.yaml
@@ -31,7 +31,7 @@ sed -i -e "s/- seeds: \"127.0.0.1\"/- seeds: \"$CASSANDRA_SEEDS\"/" $CASSANDRA_C
 # Most likely not needed
 # relates to the folllowing issue (nodetool remote connection issue):
 # http://www.datastax.com/documentation/cassandra/2.1/cassandra/troubleshooting/trblshootConnectionsFail_r.html
-echo "JVM_OPTS=\"\$JVM_OPTS -Djava.rmi.server.hostname=$IP\"" >> $CASSANDRA_CONFIG/cassandra-env.sh
+echo "JVM_OPTS=\"\$JVM_OPTS -Djava.rmi.server.hostname=$HOST\"" >> $CASSANDRA_CONFIG/cassandra-env.sh
 
 
 echo "Starting Cassandra on $HOST..."
