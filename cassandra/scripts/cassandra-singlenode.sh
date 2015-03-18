@@ -23,9 +23,6 @@ sed -i -e "s/^listen_address.*/listen_address: $IP/" $CASSANDRA_CONFIG/cassandra
 # Broadcast on IP:port of the container
 sed -i -e "s/^# broadcast_address.*/broadcast_address: $HOST/" $CASSANDRA_CONFIG/cassandra.yaml
 
-# Pointless in one-node cluster, saves about 5 sec waiting time
-echo "JVM_OPTS=\"\$JVM_OPTS -Dcassandra.skip_wait_for_gossip_to_settle=0\"" >> $CASSANDRA_CONFIG/cassandra-env.sh
-
 # Most likely not needed
 # relates to the folllowing issue (nodetool remote connection issue):
 # http://www.datastax.com/documentation/cassandra/2.1/cassandra/troubleshooting/trblshootConnectionsFail_r.html
