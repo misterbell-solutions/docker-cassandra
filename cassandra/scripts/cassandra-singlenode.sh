@@ -7,7 +7,8 @@ if [ $# == 1 ]; then SEEDS="$1,$HOST";
 else SEEDS="$HOST"; fi
 
 
-# Dunno why zeroes here
+# 0.0.0.0 Listens on all configured interfaces
+# but you must set the broadcast_rpc_address to a value other than 0.0.0.0
 sed -i -e "s/^rpc_address.*/rpc_address: 0.0.0.0/" $CASSANDRA_CONFIG/cassandra.yaml
 
 # Set broadcast_rpc_address
@@ -26,7 +27,9 @@ sed -i -e "s/^# broadcast_address.*/broadcast_address: $HOST/" $CASSANDRA_CONFIG
 echo "JVM_OPTS=\"\$JVM_OPTS -Dcassandra.skip_wait_for_gossip_to_settle=0\"" >> $CASSANDRA_CONFIG/cassandra-env.sh
 
 # Most likely not needed
-echo "JVM_OPTS=\"\$JVM_OPTS -Djava.rmi.server.hostname=$HOST\"" >> $CASSANDRA_CONFIG/cassandra-env.sh
+# relates to the folllowing issue (nodetool remote connection issue):
+# http://www.datastax.com/documentation/cassandra/2.1/cassandra/troubleshooting/trblshootConnectionsFail_r.html
+echo "JVM_OPTS=\"\$JVM_OPTS -Djava.rmi.server.hostname=$IP\"" >> $CASSANDRA_CONFIG/cassandra-env.sh
 
 
 cassandra -f
