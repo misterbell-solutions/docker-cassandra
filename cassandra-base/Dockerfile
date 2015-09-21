@@ -15,7 +15,7 @@ RUN echo "deb http://debian.datastax.com/community stable main" > /etc/apt/sourc
 
 # Install Cassandra 2.1.3
 RUN apt-get update && \
-    apt-get install -y dsc21 cassandra cassandra-tools && \
+    apt-get install -y dsc21 cassandra=2.1.9 cassandra-tools=2.1.9 && \
     rm -rf /var/lib/apt/lists/*
 
 ENV CASSANDRA_CONFIG /etc/cassandra
