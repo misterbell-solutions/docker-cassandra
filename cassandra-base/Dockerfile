@@ -4,7 +4,7 @@
 #
 # Installs Cassandra 2.1 package. 
 
-FROM dockerfile/java:oracle-java7
+FROM christobill/oracle-java7:latest
 
 ENV DEBIAN_FRONTEND noninteractive
 
