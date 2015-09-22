@@ -15,7 +15,7 @@ RUN echo "deb http://debian.datastax.com/community stable main" > /etc/apt/sourc
 
 # Install Cassandra 2.1.3
 RUN apt-get update && \
-    apt-get install -y --force-yes cassandra=2.1.9 cassandra-tools=2.1.9 dsc21 datastax-agent && \
+    apt-get install -y --force-yes cassandra=2.1.9 cassandra-tools=2.1.9 dsc21 && \
     rm -rf /var/lib/apt/lists/*
 
 ENV CASSANDRA_CONFIG /etc/cassandra
@@ -27,10 +27,6 @@ RUN /usr/local/bin/config-cassandra-base
 # Necessary since cassandra is trying to override the system limitations
 # See https://groups.google.com/forum/#!msg/docker-dev/8TM_jLGpRKU/dewIQhcs7oAJ
 RUN rm -f /etc/security/limits.d/cassandra.conf
-
-# Agent config test
-RUN echo "stomp_interface: 10.131.46.242" | sudo tee -a /var/lib/datastax-agent/conf/address.yaml
-RUN sudo service datastax-agent start
 
 EXPOSE 7199 7000 7001 9160 9042 22 8012 61621
 
