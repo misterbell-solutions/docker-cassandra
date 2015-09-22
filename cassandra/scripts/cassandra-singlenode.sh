@@ -28,5 +28,8 @@ sed -i -e "s/^# broadcast_address.*/broadcast_address: $HOST/" $CASSANDRA_CONFIG
 # http://www.datastax.com/documentation/cassandra/2.1/cassandra/troubleshooting/trblshootConnectionsFail_r.html
 echo "JVM_OPTS=\"\$JVM_OPTS -Djava.rmi.server.hostname=$HOST\"" >> $CASSANDRA_CONFIG/cassandra-env.sh
 
+sed -i 's/LOCAL_JMX=yes/LOCAL_JMX=no/g' $CASSANDRA_CONFIG/cassandra-env.sh
+sed -i 's/com.sun.management.jmxremote.authenticate=true/com.sun.management.jmxremote.authenticate=false/g' $CASSANDRA_CONFIG/cassandra-env.sh
+sed -i 's/  JVM_OPTS=\"$JVM_OPTS -Dcom.sun.management.jmxremote.password.file/#  JVM_OPTS=\"$JVM_OPTS -Dcom.sun.management.jmxremote.password.file/g' $CASSANDRA_CONFIG/cassandra-env.sh
 
 cassandra -f
