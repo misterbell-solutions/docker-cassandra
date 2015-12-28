@@ -29,7 +29,7 @@ RUN /usr/local/bin/config-cassandra-base
 RUN rm -f /etc/security/limits.d/cassandra.conf
 
 # Agent config test
-RUN echo "stomp_interface: 10.131.46.242" | sudo tee -a /var/lib/datastax-agent/conf/address.yaml
+RUN echo "stomp_interface: opscenter.marathon.mesos" | sudo tee -a /var/lib/datastax-agent/conf/address.yaml
 RUN sudo service datastax-agent start
 
 EXPOSE 7199 7000 7001 9160 9042 22 8012 61621
