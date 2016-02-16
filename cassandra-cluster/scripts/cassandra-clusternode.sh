@@ -8,13 +8,13 @@ IP=`hostname --ip-address`
 sed -i -e "s/^rpc_address.*/rpc_address: 0.0.0.0/" $CASSANDRA_CONFIG/cassandra.yaml
 
 # Set broadcast_rpc_address
-sed -i -e "s/^# broadcast_rpc_address.*/broadcast_rpc_address: $HOST/" $CASSANDRA_CONFIG/cassandra.yaml
+sed -i -e "s/^# broadcast_rpc_address.*/broadcast_rpc_address: $IP/" $CASSANDRA_CONFIG/cassandra.yaml
 
 # Listen on IP:port of the container
-sed -i -e "s/^listen_address.*/listen_address: $HOST/" $CASSANDRA_CONFIG/cassandra.yaml
+sed -i -e "s/^listen_address.*/listen_address: $IP/" $CASSANDRA_CONFIG/cassandra.yaml
 
 # Broadcast on IP:port of the container
-sed -i -e "s/^# broadcast_address.*/broadcast_address: $HOST/" $CASSANDRA_CONFIG/cassandra.yaml
+sed -i -e "s/^# broadcast_address.*/broadcast_address: $IP/" $CASSANDRA_CONFIG/cassandra.yaml
 
 # Configure Cassandra seeds
 if [ -z "$CASSANDRA_SEEDS" ]; then
@@ -22,7 +22,7 @@ if [ -z "$CASSANDRA_SEEDS" ]; then
         if [ $# == 1 ]; then
             SEEDS="$1"
         else
-            SEEDS="$HOST"
+            SEEDS="$IP"
         fi
 	CASSANDRA_SEEDS=$SEEDS
 fi
@@ -31,7 +31,7 @@ sed -i -e "s/- seeds: \"127.0.0.1\"/- seeds: \"$CASSANDRA_SEEDS\"/" $CASSANDRA_C
 # Most likely not needed
 # relates to the folllowing issue (nodetool remote connection issue):
 # http://www.datastax.com/documentation/cassandra/2.1/cassandra/troubleshooting/trblshootConnectionsFail_r.html
-echo "JVM_OPTS=\"\$JVM_OPTS -Djava.rmi.server.hostname=$HOST\"" >> $CASSANDRA_CONFIG/cassandra-env.sh
+echo "JVM_OPTS=\"\$JVM_OPTS -Djava.rmi.server.hostname=$IP\"" >> $CASSANDRA_CONFIG/cassandra-env.sh
 
 sed -i 's/LOCAL_JMX=yes/LOCAL_JMX=no/g' $CASSANDRA_CONFIG/cassandra-env.sh
 sed -i 's/com.sun.management.jmxremote.authenticate=true/com.sun.management.jmxremote.authenticate=false/g' $CASSANDRA_CONFIG/cassandra-env.sh
@@ -69,6 +69,8 @@ sed -i "s/endpoint_snitch: SimpleSnitch/endpoint_snitch: GossipingPropertyFileSn
 sed -i "s/dc=DC1/dc=$CASSANDRA_DC/g" $CASSANDRA_CONFIG/cassandra-rackdc.properties
 sed -i "s/rack=RAC1/rack=$CASSANDRA_RACK/g" $CASSANDRA_CONFIG/cassandra-rackdc.properties
 
-echo "Starting Cassandra on $HOST..."
+echo "Starting Cassandra on $IP..."
+
+
 
 cassandra -f
