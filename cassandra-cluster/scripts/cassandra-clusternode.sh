@@ -37,6 +37,38 @@ sed -i 's/LOCAL_JMX=yes/LOCAL_JMX=no/g' $CASSANDRA_CONFIG/cassandra-env.sh
 sed -i 's/com.sun.management.jmxremote.authenticate=true/com.sun.management.jmxremote.authenticate=false/g' $CASSANDRA_CONFIG/cassandra-env.sh
 sed -i 's/  JVM_OPTS=\"$JVM_OPTS -Dcom.sun.management.jmxremote.password.file/#  JVM_OPTS=\"$JVM_OPTS -Dcom.sun.management.jmxremote.password.file/g' $CASSANDRA_CONFIG/cassandra-env.sh
 
+# Default value if CASSANDRA_DC is not set
+if [ -z "$CASSANDRA_BOOTSTRAP" ]; then
+        echo -e "\n" >> $CASSANDRA_CONFIG/cassandra.yaml
+        echo "# Setting the auto_bootstrap" >> $CASSANDRA_CONFIG/cassandra.yaml
+        echo "auto_bootstrap: $CASSANDRA_BOOTSTRAP" >> $CASSANDRA_CONFIG/cassandra.yaml
+fi
+
+sed -i "s/endpoint_snitch: SimpleSnitch/endpoint_snitch: GossipingPropertyFileSnitch/g" $CASSANDRA_CONFIG/cassandra.yaml
+
+# Default value if CASSANDRA_DC is not set
+if [ -z "$CASSANDRA_DC" ]; then
+        CASSANDRA_DC=DC1
+fi
+
+# Default value if CASSANDRA_RACK is not set
+if [ -z "$CASSANDRA_RACK" ]; then
+        CASSANDRA_RACK=RAC1
+fi
+
+# Default value if CASSANDRA_RACK is not set
+if [ -z "$CASSANDRA_CLUSTER" ]; then
+        CASSANDRA_CLUSTER="Test Cluster"
+fi
+
+# Setting the cluster name
+sed -i -e s?cluster_name:"[ \'0-9a-zA-Z]*"?"cluster_name: \'$CASSANDRA_CLUSTER\'"?g $CASSANDRA_CONFIG/cassandra.yaml
+
+# Setting the datacenter and rack
+sed -i "s/endpoint_snitch: SimpleSnitch/endpoint_snitch: GossipingPropertyFileSnitch/g" $CASSANDRA_CONFIG/cassandra.yaml
+sed -i "s/dc=DC1/dc=$CASSANDRA_DC/g" $CASSANDRA_CONFIG/cassandra-rackdc.properties
+sed -i "s/rack=RAC1/rack=$CASSANDRA_RACK/g" $CASSANDRA_CONFIG/cassandra-rackdc.properties
+
 echo "Starting Cassandra on $HOST..."
 
 cassandra -f
