@@ -69,6 +69,10 @@ sed -i "s/endpoint_snitch: SimpleSnitch/endpoint_snitch: GossipingPropertyFileSn
 sed -i "s/dc=DC1/dc=$CASSANDRA_DC/g" $CASSANDRA_CONFIG/cassandra-rackdc.properties
 sed -i "s/rack=RAC1/rack=$CASSANDRA_RACK/g" $CASSANDRA_CONFIG/cassandra-rackdc.properties
 
+# Security
+sed -i "s/authenticator: AllowAllAuthenticator/authenticator: PasswordAuthenticator/g" $CASSANDRA_CONFIG/cassandra.yaml
+sed -i "s/authorizer: AllowAllAuthorizer/authorizer: CassandraAuthorizer/g" $CASSANDRA_CONFIG/cassandra.yaml
+
 echo "Starting Cassandra on $IP..."
 
 
