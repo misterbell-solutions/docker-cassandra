@@ -61,6 +61,11 @@ if [ -z "$CASSANDRA_CLUSTER" ]; then
         CASSANDRA_CLUSTER="Test Cluster"
 fi
 
+# Default value if CASSANDRA_NUM_TOKENS is not set
+if [ -z "$CASSANDRA_NUM_TOKENS" ]; then
+        CASSANDRA_NUM_TOKENS=256
+fi
+
 # Setting the cluster name
 sed -i -e s?cluster_name:"[ \'0-9a-zA-Z]*"?"cluster_name: \'$CASSANDRA_CLUSTER\'"?g $CASSANDRA_CONFIG/cassandra.yaml
 
@@ -68,6 +73,9 @@ sed -i -e s?cluster_name:"[ \'0-9a-zA-Z]*"?"cluster_name: \'$CASSANDRA_CLUSTER\'
 sed -i "s/endpoint_snitch: SimpleSnitch/endpoint_snitch: GossipingPropertyFileSnitch/g" $CASSANDRA_CONFIG/cassandra.yaml
 sed -i "s/dc=DC1/dc=$CASSANDRA_DC/g" $CASSANDRA_CONFIG/cassandra-rackdc.properties
 sed -i "s/rack=RAC1/rack=$CASSANDRA_RACK/g" $CASSANDRA_CONFIG/cassandra-rackdc.properties
+
+# Setting the num_tokens
+sed -i -e s?num_tokens:"[ \'0-9a-zA-Z]*"?"num_tokens: $CASSANDRA_NUM_TOKENS"?g $CASSANDRA_CONFIG/cassandra.yaml
 
 # Security
 sed -i "s/authenticator: AllowAllAuthenticator/authenticator: PasswordAuthenticator/g" $CASSANDRA_CONFIG/cassandra.yaml
