@@ -4,7 +4,7 @@
 #
 # Installs Cassandra 3.0.9 package.
 
-FROM christobill/oracle-java7:latest
+FROM christobill/oracle-java8:latest
 
 ENV DEBIAN_FRONTEND noninteractive
 
