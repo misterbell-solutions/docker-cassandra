@@ -1,8 +1,8 @@
-# Cassandra 2.1 Base Image
+# Cassandra 3.0.9 Base Image
 #
 # VERSION               0.1
 #
-# Installs Cassandra 2.1 package. 
+# Installs Cassandra 3.0.9 package.
 
 FROM christobill/oracle-java7:latest
 
@@ -13,9 +13,9 @@ ADD datastax_key /tmp/datastax_key
 RUN apt-key add /tmp/datastax_key
 RUN echo "deb http://debian.datastax.com/community stable main" > /etc/apt/sources.list.d/datastax.list
 
-# Install Cassandra 2.1.3
+# Install Cassandra 3.0.9
 RUN apt-get update && \
-    apt-get install -y --force-yes cassandra=2.1.2 cassandra-tools=2.1.2 dsc21=2.1.2-1 datastax-agent && \
+    apt-get install -y --force-yes cassandra=3.0.9 cassandra-tools=3.0.9 dsc30=3.0.9-1 datastax-agent=5.2.4 && \
     rm -rf /var/lib/apt/lists/*
 
 ENV CASSANDRA_CONFIG /etc/cassandra
