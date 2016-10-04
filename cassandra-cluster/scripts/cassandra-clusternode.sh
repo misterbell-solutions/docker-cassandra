@@ -71,8 +71,8 @@ sed -i -e s?cluster_name:"[ \'0-9a-zA-Z]*"?"cluster_name: \'$CASSANDRA_CLUSTER\'
 
 # Setting the datacenter and rack
 sed -i "s/endpoint_snitch: SimpleSnitch/endpoint_snitch: GossipingPropertyFileSnitch/g" $CASSANDRA_CONFIG/cassandra.yaml
-sed -i "s/dc=DC1/dc=$CASSANDRA_DC/g" $CASSANDRA_CONFIG/cassandra-rackdc.properties
-sed -i "s/rack=RAC1/rack=$CASSANDRA_RACK/g" $CASSANDRA_CONFIG/cassandra-rackdc.properties
+sed -i "s/dc=dc1/dc=$CASSANDRA_DC/g" $CASSANDRA_CONFIG/cassandra-rackdc.properties
+sed -i "s/rack=rack1/rack=$CASSANDRA_RACK/g" $CASSANDRA_CONFIG/cassandra-rackdc.properties
 
 # Setting the num_tokens
 sed -i -e s?num_tokens:"[ \'0-9a-zA-Z]*"?"num_tokens: $CASSANDRA_NUM_TOKENS"?g $CASSANDRA_CONFIG/cassandra.yaml
