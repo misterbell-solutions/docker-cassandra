@@ -36,6 +36,7 @@ echo "JVM_OPTS=\"\$JVM_OPTS -Djava.rmi.server.hostname=$IP\"" >> $CASSANDRA_CONF
 sed -i 's/LOCAL_JMX=yes/LOCAL_JMX=no/g' $CASSANDRA_CONFIG/cassandra-env.sh
 sed -i 's/com.sun.management.jmxremote.authenticate=true/com.sun.management.jmxremote.authenticate=false/g' $CASSANDRA_CONFIG/cassandra-env.sh
 sed -i 's/  JVM_OPTS=\"$JVM_OPTS -Dcom.sun.management.jmxremote.password.file/#  JVM_OPTS=\"$JVM_OPTS -Dcom.sun.management.jmxremote.password.file/g' $CASSANDRA_CONFIG/cassandra-env.sh
+sed -i "s,system_memory_in_mb=\`free \-m.*,system_memory_in_mb=\`cat /sys/fs/cgroup/memory/memory.limit_in_bytes | awk \'{print int(\$1 / (1024 * 1024))}\'\`,g" /etc/cassandra/cassandra-env.sh
 
 # Default value if CASSANDRA_DC is not set
 if [ -z "$CASSANDRA_BOOTSTRAP" ]; then
