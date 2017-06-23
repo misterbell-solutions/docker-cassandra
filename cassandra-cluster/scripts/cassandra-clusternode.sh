@@ -2,6 +2,7 @@
 
 # Get running container's IP
 IP=`hostname --ip-address`
+IP_PUBLIC=`hostname -I | head -n1 | cut -d " " -f1`
 
 # 0.0.0.0 Listens on all configured interfaces
 # but you must set the broadcast_rpc_address to a value other than 0.0.0.0
@@ -14,7 +15,7 @@ sed -i -e "s/^# broadcast_rpc_address.*/broadcast_rpc_address: $IP/" $CASSANDRA_
 sed -i -e "s/^listen_address.*/listen_address: $IP/" $CASSANDRA_CONFIG/cassandra.yaml
 
 # Broadcast on IP:port of the container
-sed -i -e "s/^# broadcast_address.*/broadcast_address: $IP/" $CASSANDRA_CONFIG/cassandra.yaml
+sed -i -e "s/^# broadcast_address.*/broadcast_address: $IP_PUBLIC/" $CASSANDRA_CONFIG/cassandra.yaml
 
 # Configure Cassandra seeds
 if [ -z "$CASSANDRA_SEEDS" ]; then
